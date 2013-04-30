@@ -1,0 +1,26 @@
+{
+    "name":"orbisnull/bincella",
+    "description":"FileStorage",
+    "license":"Private",
+
+    "minimum-stability":"dev",
+
+    "autoload":{
+        "psr-0":{
+            "BinCella":"src/"
+        },
+        "classmap": [
+            "./Module.php"
+        ]
+    },
+
+    "repositories": [
+        {
+        }
+    ],
+
+    "require":{
+        "php":">=5.3.0",
+        "phpoption/phpoption": "dev-master",
+    }
+}
