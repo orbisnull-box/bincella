@@ -22,6 +22,6 @@ abstract class LocalDirectory extends AbstractAdapter
         if (!$this->checkDir($outputDir)) {
             throw new \Exception("Directory $outputDir not exist, or not writable");
         }
-        rename($filePath, $fileId);
+        return rename($filePath, $fileId);
     }
 }

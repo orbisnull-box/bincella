@@ -71,6 +71,13 @@ class MetadataStorage
         return $this->getAdapter()->insert(self::TABLE, $data);
     }
 
+    public function delete($fileId)
+    {
+        $this->getAdapter()->delete(self::TABLE, $fileId);
+    }
 
-
+    public function find($nodeId = null, $group = null, $owner = null, $start = null, $limit = null)
+    {
+        return $this->getAdapter()->find(self::TABLE, $nodeId, $owner, $group);
+    }
 }

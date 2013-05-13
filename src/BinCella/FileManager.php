@@ -55,13 +55,18 @@ class FileManager
 
     public function getFileType($filePath)
     {
-        
+
     }
 
     public function save($nodeId, $filePath, $group, $user, $other = null)
     {
         $fileId = $this->getMetadataStorage()->save($nodeId, $group, $user, $other);
-        $result = $this->getFileStorage()->save($fileId, $filePath);
+        $saved = $this->getFileStorage()->save($fileId, $filePath);
+        if (!$saved) {
+            $this->getMetadataStorage()->delete($fileId);
+            return false;
+        }
+        return $fileId;
     }
 
     public function saveAll($nodeId, array $files, array $meta)
@@ -69,12 +74,30 @@ class FileManager
 
     }
 
+    public function hydrateFiles(array $filesData)
+    {
+        $files = [];
+        foreach ($filesData as $data) {
+            $file = new File($data);
+            $file->setManager($this);
+            $files[$file->getId()] = $file;
+        }
+        return $files;
+    }
+
     /**
      * @param $nodeId
      * @return File[]
      */
-    public function getFiles($nodeId)
+    public function getNodeFiles($nodeId)
     {
+        $files = $this->getMetadataStorage()->find($nodeId);
+        return $this->hydrateFiles($files);
+    }
 
+    public function getUserFiles($userId)
+    {
+        $files = $this->getMetadataStorage()->find(null, null, $userId);
+        return $this->hydrateFiles($files);
     }
 }

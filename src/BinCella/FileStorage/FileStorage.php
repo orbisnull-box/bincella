@@ -3,6 +3,7 @@
 namespace BinCella\FileStorage;
 
 use BinCella\F;
+use BinCella\FileStorage\Adapter\LocalDirectory;
 
 class FileStorage
 {
@@ -31,6 +32,10 @@ class FileStorage
         return $this->config[$name];
     }
 
+    /**
+     * @return LocalDirectory
+     * @throws \Exception
+     */
     public function getAdapter()
     {
         if (is_null($this->adapter)) {
@@ -47,9 +52,9 @@ class FileStorage
         return $this->adapter;
     }
 
-    public function save($nodeId, $file)
+    public function save($fileId, $filePath)
     {
-        //
+        return $this->getAdapter()->save($fileId, $filePath);
     }
 
 }
