@@ -33,9 +33,9 @@ class UploadHandler
     public function getConfig()
     {
         $targetDir = 'uploads';
-        $maxFileAge = 5 * 3600;
+        //$maxFileAge = 5 * 3600;
 
-        return compact($targetDir, $maxFileAge);
+        return compact($targetDir);
     }
 
     public function getChunks()
