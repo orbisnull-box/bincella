@@ -15,12 +15,9 @@
     },
 
     "repositories": [
-        {
-        }
     ],
 
     "require":{
-        "php":">=5.3.0",
-        "phpoption/phpoption": "dev-master",
+        "php":">=5.3.0"
     }
 }
