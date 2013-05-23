@@ -10,7 +10,7 @@
  */
 
 
-class UploadHandler
+class Plupload
 {
     function __construct()
     {

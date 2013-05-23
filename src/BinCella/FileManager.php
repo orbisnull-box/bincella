@@ -4,12 +4,14 @@ namespace BinCella;
 
 use BinCella\FileStorage\FileStorage;
 use BinCella\MetadataStorage\MetadataStorage;
+use BinCella\UploadHandler\Adapter\AbstractAdapter;
 
 class FileManager
 {
     protected $fileStorage;
     protected $metadataStorage;
     protected $config;
+    protected $uploadHandlers = [];
 
     function __construct(array $config = null)
     {
@@ -58,6 +60,20 @@ class FileManager
 
     }
 
+    /**
+     * @param $handler
+     * @return AbstractAdapter
+     */
+    public function getUploadHandler($handler)
+    {
+        if (!isset($this->uploadHandlers[$handler])) {
+            $handler = __NAMESPACE__ . '/UploadHandler/Adapter/' . $handler;
+            $objHandler = new $handler($this);
+            $this->uploadHandlers[$handler] = $objHandler;
+        }
+        return $this->uploadHandlers[$handler];
+    }
+
     public function save($nodeId, $filePath, $group, $user, $other = null)
     {
         $fileId = $this->getMetadataStorage()->save($nodeId, $group, $user, $other);
@@ -69,9 +85,14 @@ class FileManager
         return $fileId;
     }
 
-    public function saveAll($nodeId, array $files, array $meta)
+    public function saveAll($uploadHandler, $nodeId, array $files, array $meta)
     {
-
+        $uploader = $this->getUploadHandler($uploadHandler);
+        $files = $uploader->saveFiles();
+        if (!is_array($files)) {
+            return true;
+        }
+        return $files;
     }
 
     public function hydrateFiles(array $filesData)
